@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Workouts</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1a18;
+      --paper: #f4f0e8;
+      --cream: #ece7d8;
+      --accent: #c8401a;
+      --accent2: #2a5c3f;
+      --muted: #8a8578;
+      --rule: #d4cfc0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 2.5rem 2rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: 'HOME GYM';
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 14rem;
+      position: absolute;
+      top: -3rem;
+      right: -2rem;
+      opacity: 0.05;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      position: relative;
+    }
+
+    header h1 span {
+      color: var(--accent);
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--muted);
+      margin-top: 0.5rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      position: relative;
+    }
+
+    .gear-strip {
+      background: var(--accent);
+      color: white;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .gear-strip ul {
+      display: flex;
+      flex-flow: row wrap;
+      gap: 1rem;
+
+      & li::marker {
+        content: "·";
+        margin-inline-end: 1rem;
+      }
+    }
+
+    .main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    .note {
+      background: var(--cream);
+      border-left: 3px solid var(--accent2);
+      padding: 0.9rem 1.1rem;
+      font-size: 0.82rem;
+      color: #444;
+      line-height: 1.6;
+
+      &:not(:last-of-type) {
+        margin-bottom: 2.5rem;
+      }
+    }
+
+    .note strong {
+      color: var(--accent2);
+      font-weight: 500;
+    }
+
+    .section-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.85rem;
+      font-weight: normal;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .workout-grid {
+      display: grid;
+      gap: 1.2rem;
+      margin-bottom: 3rem;
+    }
+
+    .workout-card {
+      background: white;
+      border: 1px solid var(--rule);
+      position: relative;
+      transition: box-shadow 0.15s ease;
+    }
+
+    .workout-card:hover {
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .card-header {
+      display: grid;
+      grid-template-columns: 3.5rem 1fr auto;
+      align-items: start;
+      gap: 0;
+      border-bottom: 1px solid var(--rule);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .workout-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--accent);
+      padding: 0.8rem 0 0.8rem 1rem;
+      line-height: 1;
+    }
+
+    .card-title-block {
+      padding: 0.8rem 0.5rem 0.8rem 0.8rem;
+    }
+
+    .workout-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.35rem;
+      font-weight: normal;
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+
+    .workout-tags {
+      display: flex;
+      gap: 0.4rem;
+      margin-top: 0.35rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+    }
+
+    .tag-strength {
+      background: #e8f0ec;
+      color: var(--accent2);
+    }
+
+    .tag-conditioning {
+      background: #fdeee9;
+      color: var(--accent);
+    }
+
+    .tag-skill {
+      background: #eeeaf8;
+      color: #5a4a8a;
+    }
+
+    .tag-accessory {
+      background: #f0ede4;
+      color: #7a6d54;
+    }
+
+    .tag-emom {
+      background: #e8f4fd;
+      color: #1a5c8a;
+    }
+
+    .toggle-btn {
+      font-size: 1.2rem;
+      color: var(--muted);
+      padding: 0.8rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      transition: color 0.15s, rotate 0.15s;
+    }
+
+    .workout-card:open .toggle-btn {
+      rotate: 0.5turn;
+    }
+
+    .card-header:hover .toggle-btn {
+      color: var(--ink);
+    }
+
+    .card-body {
+      padding: 1.1rem 1.2rem 1.2rem;
+    }
+
+    .time-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .time-pill {
+      background: var(--ink);
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 2px;
+      font-size: 0.72rem;
+    }
+
+    .section-block {
+      margin-bottom: 1rem;
+    }
+
+    .block-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.45rem;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 0.25rem;
+    }
+
+    .block-content {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: #333;
+    }
+
+    .block-content li {
+      list-style: none;
+      padding-left: 1rem;
+      position: relative;
+    }
+
+    .block-content li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--rule);
+    }
+
+    .format-box {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 0.7rem 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+
+    .format-box .highlight {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .coach-note {
+      background: var(--cream);
+      border-left: 2px solid var(--accent2);
+      padding: 0.6rem 0.9rem;
+      font-size: 0.78rem;
+      color: #555;
+      line-height: 1.5;
+      margin-top: 0.8rem;
+      font-style: italic;
+    }
+
+    .weight-table {
+      width: 100%;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      margin: 0.5rem 0;
+      border-collapse: collapse;
+    }
+
+    .weight-table td {
+      padding: 0.25rem 0.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .weight-table td:first-child {
+      color: var(--muted);
+    }
+
+    .weight-table td:last-child {
+      font-weight: 500;
+      color: var(--accent2);
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2.5rem;
+      }
+
+      header::before {
+        font-size: 8rem;
+      }
+
+      .workout-num {
+        font-size: 1.5rem;
+      }
+
+      .workout-name {
+        font-size: 1.15rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>HOME <span>WORKOUTS</span></h1>
+    <div class="subtitle">Barbell · Kettlebell · Dumbbell · Bodyweight · Off-Day Programming</div>
+  </header>
+  <div class="gear-strip">Barbell · Squat rack + hang bar · Plates (up to 45s) · KBs: 35# & 53# · DBs: 10# / 25# / 35#
+    pairs · Med ball · Bench</div>
+
+  <div class="main">
+
+    <div class="note">
+      <strong>How to use:</strong> These are standalone sessions — pull any one whenever you have time. Aim for 2–3 per
+      week on days away from CrossFit. Mix categories: don't do two heavy strength days back to back. Sessions are 25–45
+      min. Scale loads to how you feel that day.
+    </div>
+
+    <!-- STRENGTH -->
+    <h2 class="section-label">Strength Sessions</h2>
+    <div class="workout-grid">
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">S1</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Squat & Hinge Day</h3>
+            <div class="workout-tags">
+              <span class="tag tag-strength">Strength</span>
+              <span class="tag tag-accessory">Posterior Chain</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~35 min</span> barbell</div>
+          <div class="section-block">
+            <div class="block-title">Warm-Up (5 min)</div>
+            <div class="block-content">
+              <ul>
+                <li>Hip circles, leg swings, 10 air squats, 10 good mornings (empty bar)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="section-block">
+            <div class="block-title">Main Work</div>
+            <div class="format-box">
+              <span class="highlight">Back Squat</span> — 5 × 5<br>
+              Build to a moderate-heavy 5. Rest 2–3 min between sets.<br><br>
+              <span class="highlight">Romanian Deadlift</span> — 4 × 8<br>
+              Slow eccentric (3 sec down). Moderate load.
+            </div>
+          </div>
+          <div class="section-block">
+            <div class="block-title">Accessory (2 rounds)</div>
+            <div class="block-content">
+              <ul>
+                <li>10 single-leg RDL each side — 35# KB in opposite hand</li>
+                <li>15 back extensions on floor (superman holds, 2 sec pause)</li>
+                <li>10 slow tempo air squats (3 sec down, pause at bottom)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="coach-note">The RDLs are probably the single best thing you can add at home — CrossFit rarely
+            loads hamstrings with this kind of slow, deliberate work.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">S2</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Deadlift Focus</h3>
+            <div class="workout-tags">
+              <span class="tag tag-strength">Strength</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~30 min</span> barbell</div>
+          <div class="section-block">
+            <div class="block-title">Main Work</div>
+            <div class="format-box">
+              <span class="highlight">Conventional Deadlift</span> — 6 × 3<br>
+              Build over 6 sets — last 2 should be near heavy. Rest 2–3 min.<br><br>
+              <span class="highlight">Barbell Row</span> — 4 × 8<br>
+              Overhand grip, torso ~45°. Pull to lower chest.
+            </div>
+          </div>
+          <div class="section-block">
+            <div class="block-title">Finisher (1 round)</div>
+            <div class="block-content">
+              <ul>
+                <li>Accumulate 60 sec dead hang (feet lifted, scapular active)</li>
+                <li>20 hollow rocks</li>
+                <li>15 push-ups</li>
+              </ul>
+            </div>
+          </div>
+          <div class="coach-note">If your CrossFit programming already includes heavy deadlifts that week, drop the load
+            here by 20% and focus on speed off the floor.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">S3</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Front Squat + Core</h3>
+            <div class="workout-tags">
+              <span class="tag tag-strength">Strength</span>
+              <span class="tag tag-skill">Skill</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~35 min</span> barbell + KB</div>
+          <div class="section-block">
+            <div class="block-title">Main Work</div>
+            <div class="format-box">
+              <span class="highlight">Front Squat</span> — 5 × 3<br>
+              Focus on upright torso and full depth. Lighter than back squat.<br><br>
+              <span class="highlight">Good Mornings</span> — 3 × 10<br>
+              Light load, slow and controlled.
+            </div>
+          </div>
+          <div class="section-block">
+            <div class="block-title">Core Circuit — 3 rounds</div>
+            <div class="block-content">
+              <ul>
+                <li>30 sec hollow body hold</li>
+                <li>30 sec arch / superman hold</li>
+                <li>10 V-ups</li>
+                <li>10 KB Russian twists each side — 35# KB</li>
+              </ul>
+            </div>
+          </div>
+          <div class="coach-note">Front squat position transfers directly to cleans. If your elbows tend to drop in
+            CrossFit, drill this deliberately here.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">S4</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Pause Squat + Upper Pull</h3>
+            <div class="workout-tags">
+              <span class="tag tag-strength">Strength</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~30 min</span> barbell</div>
+          <div class="section-block">
+            <div class="block-title">Main Work</div>
+            <div class="format-box">
+              <span class="highlight">Pause Back Squat</span> — 5 × 3<br>
+              3-second pause at the bottom. Much lighter than normal squat — focus on staying braced and upright, not
+              grinding through. Rest 2 min.<br><br>
+              <span class="highlight">Barbell Row</span> — 4 × 10<br>
+              Overhand grip. 2-second squeeze at top.
+            </div>
+          </div>
+          <div class="section-block">
+            <div class="block-title">Finisher — 3 rounds</div>
+            <div class="block-content">
+              <ul>
+                <li>10 slow tempo push-ups (3 sec down, 1 sec pause at chest)</li>
+                <li>10 DB bent-over rows each arm — 35# DB</li>
+                <li>10 DB bicep curls — 25# DB</li>
+              </ul>
+            </div>
+          </div>
+          <div class="coach-note">Pause squats build the bottom-position strength that translates directly to catching
+            heavy cleans. The discomfort sitting in that hole is the point.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">S5</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Deadlift Variation + Hip Thrust</h3>
+            <div class="workout-tags">
+              <span class="tag tag-strength">Strength</span>
+              <span class="tag tag-accessory">Posterior Chain</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~30 min</span> barbell</div>
+          <div class="section-block">
+            <div class="block-title">Main Work</div>
+            <div class="format-box">
+              <span class="highlight">Sumo Deadlift</span> — 5 × 5<br>
+              Wide stance, toes out, grip inside knees. Great low-stakes place to experiment if you haven't tried it.
+              Moderate load.<br><br>
+              <span class="highlight">Stiff-Leg Deadlift</span> — 3 × 8<br>
+              Bar stays close, minimal knee bend. Feel the hamstring stretch.
+            </div>
+          </div>
+          <div class="section-block">
+            <div class="block-title">Finisher — 3 rounds</div>
+            <div class="block-content">
+              <ul>
+                <li>12 barbell hip thrusts (upper back on bench, bar across hips, drive through heels)</li>
+                <li>10 KB swings — 53# KB</li>
+              </ul>
+            </div>
+          </div>
+          <div class="coach-note">Hip thrusts are one of the best glute builders available and almost never appear in
+            CrossFit. The bench makes these much more comfortable than floor-only.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">S6</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Bench + KB Press Superset</h3>
+            <div class="workout-tags">
+              <span class="tag tag-strength">Strength</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~35 min</span> barbell + DB + bench</div>
+          <div class="section-block">
+            <div class="block-title">Main Work</div>
+            <div class="format-box">
+              <span class="highlight">Bench Press</span> — 5 × 5<br>
+              Build to a moderate-heavy 5. Full ROM, controlled eccentric.<br><br>
+              <span class="highlight">DB Incline Press</span> — 3 × 10<br>
+              35# DBs. Set bench to ~45°. Elbows at 45° from torso.
+            </div>
+          </div>
+          <div class="section-block">
+            <div class="block-title">Superset — 3 rounds, minimal rest</div>
+            <div class="block-content">
+              <ul>
+                <li>10 DB bent-over rows — 35# each arm</li>
+                <li>10 DB hammer curls — 25# DBs</li>
+                <li>10 tricep dips off bench</li>
+              </ul>
+            </div>
+          </div>
+          <div class="coach-note">CrossFit does a lot of pressing but almost all of it is overhead or push-up based.
+            Horizontal pressing and dedicated arm work fills a real gap here.</div>
+        </div>
+      </details>
+
+    </div><!-- /strength -->
+
+    <!-- CONDITIONING -->
+    <h2 class="section-label">Conditioning Sessions</h2>
+    <div class="workout-grid">
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">C1</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Barbell Cycling EMOM</h3>
+            <div class="workout-tags">
+              <span class="tag tag-conditioning">Conditioning</span>
+              <span class="tag tag-emom">EMOM</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~25 min</span> barbell</div>
+          <div class="format-box">
+            <span class="highlight">EMOM × 16 min</span> — alternating:<br>
+            Odd minutes: 5 hang power cleans<br>
+            Even minutes: 7 barbell deadlifts<br><br>
+            Then: 2 rounds for quality —<br>
+            10 barbell bent-over rows<br>
+            10 slow RDLs<br>
+            Rest as needed
+          </div>
+          <div class="section-block">
+            <div class="block-title">Loading Guide</div>
+            <div class="block-content">
+              <table class="weight-table">
+                <tr>
+                  <td>Light / recovery day</td>
+                  <td>75–95 lb</td>
+                </tr>
+                <tr>
+                  <td>Moderate</td>
+                  <td>95–115 lb</td>
+                </tr>
+                <tr>
+                  <td>Heavy</td>
+                  <td>135 lb</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="coach-note">Keep the cleans crisp — if your elbows slow down or you're muscling it up, drop the
+            weight. Quality reps build better movement than grinding.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">C2</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Bodyweight Grinder</h3>
+            <div class="workout-tags">
+              <span class="tag tag-conditioning">Conditioning</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~20–25 min</span> bodyweight</div>
+          <div class="format-box">
+            <span class="highlight">5 rounds for time:</span><br>
+            10 burpees<br>
+            15 air squats<br>
+            10 push-ups<br>
+            20 hollow rocks<br>
+            Rest 1 min between rounds
+          </div>
+          <div class="coach-note">This hits well on days your body is beat up but you want to move. Scale push-ups to
+            knees if chest/shoulders are smoked from gym days.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">C3</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Med Ball Complex</h3>
+            <div class="workout-tags">
+              <span class="tag tag-conditioning">Conditioning</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~20 min</span> med ball + bodyweight</div>
+          <div class="format-box">
+            <span class="highlight">AMRAP 18 min:</span><br>
+            10 med ball squat cleans<br>
+            10 med ball Russian twists (each side)<br>
+            10 med ball push-ups (hands on ball)<br>
+            10 burpees<br>
+            15 sit-ups
+          </div>
+          <div class="coach-note">Med ball squat cleans are a sneaky-good clean substitute — full hip extension, catch
+            in front-rack squat. Great for clean mechanics when overhead isn't an option.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">C4</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Death by Deadlift</h3>
+            <div class="workout-tags">
+              <span class="tag tag-conditioning">Conditioning</span>
+              <span class="tag tag-strength">Strength</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~25 min</span> barbell</div>
+          <div class="format-box">
+            <span class="highlight">Every 2 min × 10 rounds:</span><br>
+            3 deadlifts (building — add 10 lb every other round)<br>
+            Max burpees with remaining time<br><br>
+            Start ~60% of your 1RM. End heavy but not failing.<br>
+            Score = total burpees across all rounds.
+          </div>
+          <div class="coach-note">The 2-minute clock runs continuously. After your deadlifts, do burpees until you
+            decide to stop — the remaining time in that window is your rest. Push burpees too long and you'll pay for it
+            on the next set of deadlifts. That tradeoff is the whole game.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">C5</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">21-15-9</h3>
+            <div class="workout-tags">
+              <span class="tag tag-conditioning">Conditioning</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~15–20 min</span> barbell</div>
+          <div class="format-box">
+            <span class="highlight">For time — 21-15-9:</span><br>
+            Deadlifts<br>
+            Burpees<br><br>
+            Pick a weight you can do the first 21 deadlifts in 2 sets max.
+          </div>
+          <div class="coach-note">Simple and brutal. Rest as needed between movements but keep moving. Post your time
+            and try to beat it next time you pull this session.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">C6</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Barbell Complex AMRAP</h3>
+            <div class="workout-tags">
+              <span class="tag tag-conditioning">Conditioning</span>
+              <span class="tag tag-emom">AMRAP</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~20 min</span> barbell</div>
+          <div class="format-box">
+            <span class="highlight">AMRAP 15 min:</span><br>
+            5 hang power cleans<br>
+            5 front squats (from the clean, no re-rack)<br>
+            5 barbell rows<br><br>
+            One barbell, one weight the whole time. ~95–115 lb.<br>
+            Score = rounds + reps.
+          </div>
+          <div class="coach-note">The front squats coming directly out of the clean make this a real test of front rack
+            endurance. If your wrists or elbows fatigue, that's useful information.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">C7</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">KB + DB Chipper</h3>
+            <div class="workout-tags">
+              <span class="tag tag-conditioning">Conditioning</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~20–25 min</span> KB + DB</div>
+          <div class="format-box">
+            <span class="highlight">For time:</span><br>
+            30 KB swings — 53# KB<br>
+            25 DB goblet squats — 35# DB<br>
+            20 DB push press — 25# DBs<br>
+            15 DB Romanian deadlifts — 35# DBs<br>
+            10 burpees<br>
+            20 DB goblet squats — 35# DB<br>
+            30 KB swings — 53# KB
+          </div>
+          <div class="coach-note">The palindrome structure means you finish on the thing that hurt at the start. Break
+            up the swings however you need — the 53# will get heavy fast.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">C8</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Med Ball Tabata</h3>
+            <div class="workout-tags">
+              <span class="tag tag-conditioning">Conditioning</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~20 min</span> med ball + bodyweight</div>
+          <div class="format-box">
+            <span class="highlight">Tabata (8 × 20 sec on / 10 sec off)</span> per movement.<br>
+            Rest 1 min between movements.<br><br>
+            1. Med ball squat cleans<br>
+            2. Burpees<br>
+            3. Sit-ups<br>
+            4. Push-ups<br><br>
+            Score = lowest round of each movement.
+          </div>
+          <div class="coach-note">Tabata scoring rewards consistency over sprinting. Try to hold the same rep count
+            every round rather than blowing out early.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">C9</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">KB Swing EMOM</h3>
+            <div class="workout-tags">
+              <span class="tag tag-conditioning">Conditioning</span>
+              <span class="tag tag-emom">EMOM</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~25 min</span> KB + bodyweight</div>
+          <div class="format-box">
+            <span class="highlight">EMOM × 20 min — alternating:</span><br>
+            Odd: 15 KB swings — 53# KB<br>
+            Even: 10 burpees<br><br>
+            Then: 2 min rest, then —<br>
+            <span class="highlight">3 rounds:</span><br>
+            10 KB goblet squats — 53# KB<br>
+            10 push-ups<br>
+            Rest 45 sec
+          </div>
+          <div class="coach-note">Russian swings (hip height) are fine here — American swings (overhead) aren't worth
+            the ceiling risk in your basement.</div>
+        </div>
+      </details>
+
+    </div><!-- /conditioning -->
+
+    <!-- SKILL & ACCESSORY -->
+    <h2 class="section-label">Skill & Accessory Sessions</h2>
+    <div class="workout-grid">
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">SK1</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Clean Technique Day</h3>
+            <div class="workout-tags">
+              <span class="tag tag-skill">Skill</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~30 min</span> light barbell</div>
+          <div class="section-block">
+            <div class="block-title">Drill Sequence — run through 3×</div>
+            <div class="block-content">
+              <ul>
+                <li>5 slow deadlifts to knee — pause, feel position</li>
+                <li>5 high pulls from hang (feel the shrug + elbow drive)</li>
+                <li>5 muscle cleans (no re-bend, just arms)</li>
+                <li>5 hang power cleans — focus on punch under</li>
+                <li>5 full hang squat cleans</li>
+              </ul>
+            </div>
+          </div>
+          <div class="format-box">
+            <span class="highlight">Finisher:</span> 5 × 3 hang power cleans @ 70%<br>
+            1 complex per minute. Video yourself and check positions.
+          </div>
+          <div class="coach-note">This is your "free practice" session — the stuff that gets rushed in class. No PRs,
+            just reps with intent.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">SK2</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Handstand + Gymnastics Work</h3>
+            <div class="workout-tags">
+              <span class="tag tag-skill">Skill</span>
+              <span class="tag tag-accessory">Accessory</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~25 min</span> bodyweight</div>
+          <div class="section-block">
+            <div class="block-title">Handstand Practice — 10 min</div>
+            <div class="block-content">
+              <ul>
+                <li>Wall-facing handstand holds — 5 × max duration</li>
+                <li>Kick-up practice — 10 attempts, focus on stacked position</li>
+                <li>Pike push-ups if handstands aren't there yet — 4 × 8</li>
+              </ul>
+            </div>
+          </div>
+          <div class="section-block">
+            <div class="block-title">Hang Bar Work — 10 min</div>
+            <div class="block-content">
+              <ul>
+                <li>Scapular pulls — 4 × 8 (retract/depress at top)</li>
+                <li>L-sit hold in hang — 5 × max (knees or straight legs)</li>
+                <li>Slow knee raises — 3 × 10 (controlled, no kipping)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="section-block">
+            <div class="block-title">Core Finisher</div>
+            <div class="block-content">
+              <ul>
+                <li>3 × 30 sec hollow body hold</li>
+                <li>3 × 10 tuck-ups</li>
+              </ul>
+            </div>
+          </div>
+          <div class="coach-note">Scapular pulls while hanging are often more valuable than full pull-ups for building
+            the shoulder stability needed for kipping and muscle-ups.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">SK3</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Active Recovery Flow</h3>
+            <div class="workout-tags">
+              <span class="tag tag-accessory">Recovery</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~20 min</span> bodyweight + med ball</div>
+          <div class="format-box">
+            <span class="highlight">2 rounds, easy pace, no rush:</span><br>
+            World's greatest stretch × 5 each side<br>
+            10 slow air squats (pause at bottom)<br>
+            10 med ball good mornings<br>
+            10 hip circles each direction<br>
+            30 sec dead hang<br>
+            10 push-ups (slow, perfect)<br>
+            20 sec hollow body hold
+          </div>
+          <div class="coach-note">Use this on days when everything feels beaten up. Moving beats not moving — this will
+            leave you feeling better than before you started.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">SK4</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Pulling Mechanics</h3>
+            <div class="workout-tags">
+              <span class="tag tag-skill">Skill</span>
+              <span class="tag tag-accessory">Accessory</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~25 min</span> hang bar + barbell + DB</div>
+          <div class="section-block">
+            <div class="block-title">Pulling Progression</div>
+            <div class="block-content">
+              <ul>
+                <li>Scapular pulls — 4 × 8 on hang bar</li>
+                <li>Slow negative "pull-ups" — 4 × 6 (jump to top, lower 5–7 sec)</li>
+                <li>Barbell rows — 3 × 10, 2-second squeeze at top</li>
+                <li>DB single-arm rows — 3 × 10 each arm, 35# DB</li>
+              </ul>
+            </div>
+          </div>
+          <div class="section-block">
+            <div class="block-title">Finisher</div>
+            <div class="block-content">
+              <ul>
+                <li>Accumulate 60 sec dead hang total (feet lifted)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="coach-note">Slow negatives build pulling strength fast when you can't do full pull-ups yet. The
+            controlled descent recruits the same muscles as the pull-up itself.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">SK5</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Posterior Chain Accessory</h3>
+            <div class="workout-tags">
+              <span class="tag tag-accessory">Accessory</span>
+              <span class="tag tag-strength">Strength</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~25 min</span> barbell + KB</div>
+          <div class="format-box">
+            <span class="highlight">4 × 10</span> single-leg RDL — 35# KB in opposite hand<br>
+            <span class="highlight">3 × 15</span> good mornings — light barbell, slow<br>
+            <span class="highlight">3 × 10</span> reverse hyper sub: face-down on floor, lift both legs, hold 2 sec<br>
+            <span class="highlight">3 × 12</span> KB swings — 53# KB<br>
+            <span class="highlight">3 × 30 sec</span> hollow body hold
+          </div>
+          <div class="coach-note">This session will make your hamstrings and lower back very unhappy the next day in a
+            good way. CrossFit consistently underloads this stuff.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">SK6</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Snatch Primer</h3>
+            <div class="workout-tags">
+              <span class="tag tag-skill">Skill</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~30 min</span> empty / light barbell</div>
+          <div class="section-block">
+            <div class="block-title">Drill Sequence — 3 rounds</div>
+            <div class="block-content">
+              <ul>
+                <li>5 snatch-grip deadlifts to knee — pause, feel position</li>
+                <li>5 hang muscle snatches (no re-bend, punch overhead)</li>
+                <li>5 hang power snatches — focus on transition under bar</li>
+                <li>5 overhead squats with empty bar — or broomstick for shoulder mobility work if ceiling is too low
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="coach-note">Keep this light — the goal is positions, not load. If the basement ceiling cuts off
+            overhead squats, do them with a broomstick in a lower ceiling-safe depth to drill shoulder mobility instead.
+          </div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">SK7</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Midline Specialist</h3>
+            <div class="workout-tags">
+              <span class="tag tag-skill">Skill</span>
+              <span class="tag tag-accessory">Accessory</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~20 min</span> med ball + hang bar</div>
+          <div class="format-box">
+            <span class="highlight">4 rounds:</span><br>
+            30 sec hollow body hold<br>
+            10 V-ups<br>
+            30 sec arch hold<br>
+            10 supermans<br>
+            Rest 30 sec<br><br>
+            <span class="highlight">Then — 3 rounds:</span><br>
+            10 med ball Russian twists each side<br>
+            10 med ball sit-ups<br>
+            15 knee raises on hang bar
+          </div>
+          <div class="coach-note">Quality over speed throughout. The hollow/arch pairing builds the body tension that
+            makes kipping, toes-to-bar, and bar muscle-ups possible.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">SK8</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Pistol & Single-Leg Progressions</h3>
+            <div class="workout-tags">
+              <span class="tag tag-skill">Skill</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~25 min</span> bodyweight + barbell + bench</div>
+          <div class="section-block">
+            <div class="block-title">Pistol Progressions — 15 min</div>
+            <div class="block-content">
+              <ul>
+                <li>Box pistols to bench — 4 × 5 each leg (sit back controlled)</li>
+                <li>Assisted pistols holding rack upright — 3 × 5 each leg</li>
+                <li>Freestanding attempts — 3 × max each leg, even just the descent counts</li>
+              </ul>
+            </div>
+          </div>
+          <div class="section-block">
+            <div class="block-title">Supplemental — 3 rounds</div>
+            <div class="block-content">
+              <ul>
+                <li>8 Bulgarian split squats each leg — rear foot on bench, barbell across back or hold KBs</li>
+                <li>10 KB goblet squats — 53# KB, focus on depth</li>
+              </ul>
+            </div>
+          </div>
+          <div class="coach-note">Bulgarian split squats with the bench are excellent and will expose any balance or
+            mobility asymmetries between legs that bilateral squats hide.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">SK9</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">KB Skill & Shoulder Health</h3>
+            <div class="workout-tags">
+              <span class="tag tag-skill">Skill</span>
+              <span class="tag tag-accessory">Accessory</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~25 min</span> KB + DB</div>
+          <div class="section-block">
+            <div class="block-title">KB Skill — 15 min</div>
+            <div class="block-content">
+              <ul>
+                <li>KB Turkish get-up — 5 × 1 each side, 35# KB (slow and deliberate, every position matters)</li>
+                <li>KB windmill — 3 × 5 each side, 35# KB</li>
+              </ul>
+            </div>
+          </div>
+          <div class="section-block">
+            <div class="block-title">Shoulder Accessory — 2 rounds</div>
+            <div class="block-content">
+              <ul>
+                <li>15 DB lateral raises — 10# DBs, slow</li>
+                <li>15 DB front raises — 10# DBs</li>
+                <li>15 DB rear delt flyes on bench — 10# DBs</li>
+                <li>10 DB external rotation each arm — 10# DB</li>
+              </ul>
+            </div>
+          </div>
+          <div class="coach-note">Turkish get-ups are one of the most complete movements you can do — shoulder
+            stability, hip mobility, core control, and coordination all in one. The 35# KB is a solid working weight
+            once you're comfortable with the movement.</div>
+        </div>
+      </details>
+
+      <details class="workout-card">
+        <summary class="card-header">
+          <div class="workout-num">SK10</div>
+          <div class="card-title-block">
+            <h3 class="workout-name">Unilateral Strength Day</h3>
+            <div class="workout-tags">
+              <span class="tag tag-accessory">Accessory</span>
+              <span class="tag tag-strength">Strength</span>
+            </div>
+          </div>
+          <div class="toggle-btn"></div>
+        </summary>
+        <div class="card-body">
+          <div class="time-bar"><span class="time-pill">~30 min</span> DB + KB + bench</div>
+          <div class="format-box">
+            <span class="highlight">4 × 8 each side</span> — DB single-arm bench press, 35# DB<br>
+            <span class="highlight">4 × 8 each side</span> — single-arm DB row, 35# DB<br>
+            <span class="highlight">3 × 10 each side</span> — single-leg KB RDL, 35# KB<br>
+            <span class="highlight">3 × 10 each side</span> — KB single-arm press, 35# KB<br>
+            <span class="highlight">3 × 12</span> — DB goblet squat, 35# DB
+          </div>
+          <div class="coach-note">Unilateral work exposes and corrects the strength imbalances that bilateral lifts
+            mask. If one side is notably weaker, start with it and match reps on the stronger side — don't compensate.
+          </div>
+        </div>
+      </details>
+
+    </div><!-- /skill -->
+
+    <div class="note">
+      <strong>Suggested weekly mix (3 CF days):</strong> On your 4 off-days, try: 1 strength session, 1 conditioning
+      session, 1 skill/accessory session, and 1 full rest day. If you're going to CF 2×/week still, you can do 2
+      strength + 1 conditioning or swap based on what CF hit that week. Avoid doubling up on posterior chain sessions
+      (S1, S2, S5, SK5) back to back.
+    </div>
+
+  </div><!-- /main -->
+
+</body>
+
+</html>
