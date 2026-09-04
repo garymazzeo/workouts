@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# PHP dependencies
+/vendor/
+
+# JavaScript dependencies and logs, if tooling is added later
+/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local editor and IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
